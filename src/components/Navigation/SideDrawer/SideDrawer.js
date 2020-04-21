@@ -10,27 +10,27 @@ class SideDrawer extends Component {
   render() {
     let sideDrawerClass = [classes.SideDrawer];
     // SideDrawer will now be an array  with the side drawer classes and the open class
-    sideDrawerClass.push(classes.Open);
+    if (this.props.showSideDrawer) {
+      sideDrawerClass.push(classes.Open);
+    }
     return (
       <Aux classname={classes.SideDrawer}>
         <Backdrop
           showBackdrop={this.props.showSideDrawer}
           clicked={this.props.toggleSideDrawer}
         />
-        {this.props.showSideDrawer && (
-          <div
-            className={sideDrawerClass.join(" ")}
-            onClick={this.props.toggleSideDrawer}
-          >
-            <div className={classes.Logo}>
-              <Logo />
-            </div>
-
-            <nav>
-              <NavigationItems />
-            </nav>
+        <div
+          className={sideDrawerClass.join(" ")}
+          onClick={this.props.toggleSideDrawer}
+        >
+          <div className={classes.Logo}>
+            <Logo />
           </div>
-        )}
+
+          <nav>
+            <NavigationItems />
+          </nav>
+        </div>
       </Aux>
     );
   }

@@ -11,12 +11,11 @@
   box-sizing: border-box;
   transition: transform 0.3s ease;
   transform: translateX(-100%);
-
+  background-color: black;
 }
 
 .SideDrawer.Open {
   transform: translateX(0);
-  background-color: black;
 }
 
 @media (min-width: 500px) {
