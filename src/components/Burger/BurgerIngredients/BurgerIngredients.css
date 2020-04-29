@@ -110,3 +110,89 @@
   background: linear-gradient(#bf3813, #c45e38);
   margin: 2% auto;
 }
+
+.GoatsContainer {
+  width: 80%;
+  height: 10%;
+  position: relative;
+  margin: 2% auto;
+  border-radius: 30px;
+}
+.Goats1 {
+  width: 8%;
+  height: 50%;
+  position: absolute;
+  background-color: #efefe2;
+  box-shadow: inset -3px -0 #c9c9c9;
+  border-radius: 10%;
+  transform: rotate(-20deg);
+  left: 20%;
+  top: 20%;
+  margin: 2% auto;
+}
+.Goats1:after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: #efefe2;
+  left: -170%;
+  top: -80%;
+  box-shadow: inset -2px -3px #c9c9c9;
+  margin: 2% auto;
+  border-radius: 10%;
+  transform: rotate(60deg);
+}
+.Goats1:before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: #efefe2;
+  left: 180%;
+  top: 50%;
+  box-shadow: inset -1px -3px #c9c9c9;
+  margin: 2% auto;
+  border-radius: 10%;
+  transform: rotate(-20deg);
+}
+
+.Goats2 {
+  width: 8%;
+  height: 50%;
+  position: absolute;
+  background-color: #efefe2;
+  box-shadow: inset -3px -0 #c9c9c9;
+  border-radius: 10%;
+  transform: rotate(-20deg);
+  top: 10%;
+  left: 65%;
+  box-shadow: inset -1px -3px #c9c9c9;
+}
+.Goats2:after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: #efefe2;
+  box-shadow: inset -3px -0 #c9c9c9;
+  border-radius: 10%;
+  transform: rotate(60deg);
+  top: -80%;
+  left: -180%;
+  box-shadow: inset -1px -3px #c9c9c9;
+}
+
+.Goats2:before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: #efefe2;
+  box-shadow: inset -3px -0 #c9c9c9;
+  border-radius: 10%;
+  transform: rotate(-30deg);
+  top: 90%;
+  left: 190%;
+  box-shadow: inset -1px -3px #c9c9c9;
+}
