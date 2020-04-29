@@ -18,7 +18,7 @@ class Auth extends Component {
           type: "email",
           placeholder: "Email Address"
         },
-        value: "",
+        value: localStorage.getItem('email') || "",
         validation: {
           required: true, // must not be empty
           isEmail: true
@@ -52,8 +52,8 @@ class Auth extends Component {
       this.props.onSetAuthRedirectPath();
     }
     const rememberMe = localStorage.getItem('rememberMe') === 'true';
-    const user = rememberMe ? localStorage.getItem('user') : '';
-    this.setState({ user, rememberMe });
+    const email = rememberMe ? localStorage.getItem('email') : '';
+    this.setState({ email, rememberMe });
   }
 
 

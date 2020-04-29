@@ -74,7 +74,7 @@ class ContactData extends Component {
           type: "email",
           placeholder: "Your E-Mail"
         },
-        value: this.props.email || "",
+        value: this.props.email || localStorage.getItem('email') || "",
         validation: {
           required: true
         },
