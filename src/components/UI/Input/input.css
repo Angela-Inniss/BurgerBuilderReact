@@ -10,19 +10,32 @@
 }
 .InputElement {
   outline: none;
-  border: 1px solid #cccc;
   background-color: white;
   font: inherit;
   padding: 6px 10px;
   display: block;
   width: 100%;
   box-sizing: border-box;
+  border: none;
 }
 input:focus {
   outline: none;
   background-color: #ccc;
 }
-.Invalid{
-  border: 1px solid red;
+
+.Invalid {
   background-color: salmon;
+}
+
+.Remember {
+  text-align: right;
+  font-size: 10px;
+}
+
+.Checkbox {
+  margin-left: 80%;
+}
+
+.BorderBottom {
+  border-bottom: 1px solid #eee;
 }

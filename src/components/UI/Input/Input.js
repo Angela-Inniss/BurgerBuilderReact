@@ -9,6 +9,9 @@ const Input = props => {
   if (props.invalid && props.shouldValidate && props.touched) {
     inputClasses.push(classes.Invalid);
   }
+  if (props.inputtype) {
+    inputClasses.push(classes.BorderBottom);
+  }
 
   switch (props.inputtype) {
     case "input":
@@ -57,12 +60,13 @@ const Input = props => {
             onChange={props.changed}
           />
           <input
+            className={classes.Checkbox}
             name="rememberMe"
             checked={props.rememberMe}
             onChange={props.checkboxChanged}
             type="checkbox"
           />
-          Remember email
+          <span className={classes.Remember}>{props.rememberEmail}</span>
         </Aux>
       );
       break;

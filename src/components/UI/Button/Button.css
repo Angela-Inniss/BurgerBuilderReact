@@ -11,16 +11,22 @@
 }
 
 .Button:first-of-type {
-  margin-left: 0;
-  padding-left: 0;
+  /*margin-left: 0;*/
+  /*padding-left: 0;*/
 }
 
 .Success {
-  color: #5c9210;
+  color: white;
+  background: #ea4c89;
+  padding: 10px 16px;
+  border-radius: 4px;
 }
 
 .Danger {
-  color: #944317;
+  color: white;
+  background: #aa6817;
+  padding: 10px 16px;
+  border-radius: 4px;
 }
 
 .Button:disabled {

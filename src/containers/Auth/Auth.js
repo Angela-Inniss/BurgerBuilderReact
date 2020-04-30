@@ -1,11 +1,14 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
+
+import { checkValidity } from "../../shared/validation";
+
 import Input from "../../components/UI/Input/Input";
 import Button from "../../components/UI/Button/Button";
 import Spinner from "../../components/UI/Spinner/Spinner";
+
 import * as actions from "../../store/actions/index";
-import { Redirect } from "react-router-dom";
-import { checkValidity } from "../../shared/validation";
 
 import classes from "./Auth.css";
 
@@ -18,7 +21,7 @@ class Auth extends Component {
           type: "email",
           placeholder: "Email Address"
         },
-        value: localStorage.getItem('email') || "",
+        value: localStorage.getItem("email") || "", // check if email is in local storage or not
         validation: {
           required: true, // must not be empty
           isEmail: true
@@ -46,16 +49,15 @@ class Auth extends Component {
   };
 
   // in componentDidMount - if we reach this auth page whilst not building a burger redirect user to correct page.
-  //this makes sure whenever we reach the auth page without building a burger we are redirected home
+  // this makes sure whenever we reach the auth page without building a burger we are redirected home
   componentDidMount() {
     if (!this.props.buildingBurger && this.props.authRedirectPath !== "/") {
       this.props.onSetAuthRedirectPath();
     }
-    const rememberMe = localStorage.getItem('rememberMe') === 'true';
-    const email = rememberMe ? localStorage.getItem('email') : '';
+    const rememberMe = localStorage.getItem("rememberMe") === "true";
+    const email = rememberMe ? localStorage.getItem("email") : "";
     this.setState({ email, rememberMe });
   }
-
 
   inputChangedHandler = (event, controlName) => {
     const updatedControls = {
@@ -82,14 +84,21 @@ class Auth extends Component {
     event.preventDefault();
   };
 
-  switchAuthModeHandler = () => {
-    this.setState(prevState => {
-      return {
-        isSignUp: !prevState.isSignUp
-      };
+  // switchAuthModeHandler = () => {
+  //   this.setState(prevState => {
+  //     return {
+  //       isSignUp: !prevState.isSignUp
+  //     };
+  //   });
+  // };
+
+  signInHandler = e => {
+    this.setState({ isSignUp: false }, () => {
+      // callback
+      console.log(this.state.isSignUp); // false?
+      this.handleSubmit(e);
     });
   };
-
   handleCheckboxChange = event => {
     const rememberMe = !this.state.rememberMe; // true
     this.setState(previousState => {
@@ -126,13 +135,11 @@ class Auth extends Component {
         changed={event => this.inputChangedHandler(event, formElement.id)}
         rememberMe={this.state.rememberMe}
         checkboxChanged={this.handleCheckboxChange.bind(this)}
+        rememberEmail="Remember email"
       />
     ));
 
-    // const emailValue = this.state.controls.email.value;
-    // console.log(emailValue);
-
-    const emailValue = formElementsArray.id
+    const emailValue = formElementsArray.id;
 
     if (this.props.loading) {
       form = <Spinner />;
@@ -154,19 +161,19 @@ class Auth extends Component {
       <div className={classes.Auth}>
         {isLoggedIn}
         {errorMessage}
-        <p>
-          <b>Sign up to create a burger</b>
-        </p>
+        <p className={classes.signUp}>Sign up to create a burger</p>
         <form onSubmit={this.handleSubmit}>
           {form}
-          <Button btnType="Success">SUBMIT</Button>
+          <Button btnType="Success">SIGN UP </Button>
         </form>
-        <p className={classes.subText}>
-          Already have an account? Switch to sign in below:
-        </p>
-        <Button clicked={this.switchAuthModeHandler} btnType="Danger">
-          {this.state.isSignUp ? "SIGN IN" : "SIGN UP"}
-        </Button>
+
+        <p className={classes.subText}>Already have an account?</p>
+        <button
+          clicked={e => this.signInHandler(e)}
+          className={classes.btnSignIn}
+        >
+          Sign In
+        </button>
       </div>
     );
   }
