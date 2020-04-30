@@ -169,7 +169,7 @@ class Auth extends Component {
 
         <p className={classes.subText}>Already have an account?</p>
         <button
-          clicked={e => this.signInHandler(e)}
+          onClick={e => this.signInHandler(e)}
           className={classes.btnSignIn}
         >
           Sign In
