@@ -6,3 +6,15 @@
   padding: 10px;
   box-sizing: border-box;
 }
+
+.Box {
+  texttransform: capitalize;
+  display: inline-block;
+  margin: 0 8px;
+  border: 1px solid #ccc;
+  background: #ea4c89;
+  font-size: 15px;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 4px;
+}
