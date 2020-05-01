@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import CheckoutSummary from "../../components/Order/CheckoutSummary";
 import { Route, Redirect } from "react-router-dom";
-import ContactData from "./ContactData/ContactData";
 import { connect } from "react-redux";
+
+import ContactData from "./ContactData/ContactData";
+import CheckoutSummary from "../../components/Order/CheckoutSummary";
 
 class Checkout extends Component {
   state = {
@@ -20,12 +21,10 @@ class Checkout extends Component {
   render() {
     let summary = <Redirect to="/" />;
 
-
     if (this.props.ings) {
       const purchasedRedirect = this.props.purchased ? (
-        <Redirect to="/" />
+        <Redirect to="/checkoutThankYou" />
       ) : null;
-
 
       summary = (
         <div>
@@ -37,7 +36,7 @@ class Checkout extends Component {
             showCheckoutMessage={this.state.showCheckoutMessage}
           />
           <Route
-            path={this.props.match.url + "/contact-data"}
+            path={this.props.match.url + "/contact-data"} // load page from the page we are currently on this.props.match.url
             component={ContactData}
           />
         </div>

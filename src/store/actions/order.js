@@ -23,7 +23,7 @@ export const purchaseBurgerStart = () => {
   };
 };
 
-// asyncronous action creator the action we dispatch once we click the order button
+// Asyncronous action creator the action we dispatch once we click the order button
 
 export const purchaseBurger = (orderData, token) => {
   // console.log(orderData);

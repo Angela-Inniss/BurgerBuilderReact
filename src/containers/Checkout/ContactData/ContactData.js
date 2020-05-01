@@ -1,15 +1,20 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+
+import { checkValidity } from "../../../shared/validation";
+
 import Button from "../../../components/UI/Button/Button";
-import classes from "./ContactData.css";
-import axios from "../../../../src/axios-orders";
 import Spinner from "../../../components/UI/Spinner/Spinner";
 import Input from "../../../components/UI/Input/Input";
-import { connect } from "react-redux";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
-import * as actions from "../../../store/actions/index";
-import { checkValidity } from "../../../shared/validation";
-import Modal from "../../../components/UI/Modal/Modal";
+
 import Aux from "../../../hoc/Aux";
+
+import * as actions from "../../../store/actions/index";
+
+import axios from "../../../../src/axios-orders";
+
+import classes from "./ContactData.css";
 
 class ContactData extends Component {
   state = {
@@ -100,7 +105,7 @@ class ContactData extends Component {
   };
 
   orderHandler = event => {
-    event.preventDefault();
+    event.preventDefault(); // stops default behaviour which is to reload the form in this case
 
     const formData = {};
     // formElementIdentifier is one of email name zipCode etc from the state above
@@ -193,12 +198,6 @@ class ContactData extends Component {
           <h4>Enter Contact Information </h4>
           {form}
         </div>
-        <Modal
-          show={this.state.orderComplete}
-          showBackDrop={this.state.showBackDrop}
-        >
-          Thank you for your order!{" "}
-        </Modal>
       </Aux>
     );
   }

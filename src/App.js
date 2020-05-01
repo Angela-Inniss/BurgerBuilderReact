@@ -7,6 +7,7 @@ import Checkout from "./containers/Checkout/checkout";
 import Orders from "./containers/Orders/Orders";
 import Auth from "./containers/Auth/Auth";
 import Logout from "./containers/Auth/Logout/Logout";
+import CheckoutThankYou from "./containers/CheckoutThankYou/checkoutThankYou";
 import { connect } from "react-redux";
 import * as actions from "./store/actions/index";
 
@@ -16,7 +17,7 @@ class App extends Component {
   }
 
   render() {
-    // if not logged in user can access following routes
+    // logged OUT user can access following routes
     let routes = (
       <Switch>
         <Route path="/auth" exact component={Auth} />
@@ -33,6 +34,7 @@ class App extends Component {
           <Route path="/orders" component={Orders} />
           <Route path="/logout" exact component={Logout} />
           <Route path="/auth" exact component={Auth} />
+          <Route path="/checkoutThankYou" exact component={CheckoutThankYou} />
           <Route path="/" exact component={BurgerBuilder} />
           <Redirect to="/" />
         </Switch>
