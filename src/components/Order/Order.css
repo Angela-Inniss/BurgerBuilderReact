@@ -10,7 +10,7 @@
 .Box {
   texttransform: capitalize;
   display: inline-block;
-  margin: 0 8px;
+  margin: 8px;
   border: 1px solid #ccc;
   background: #ea4c89;
   font-size: 15px;

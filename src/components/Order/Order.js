@@ -3,9 +3,7 @@ import React from "react";
 import classes from "./Order.css";
 import Burger from "../Burger/Burger";
 
-
 const Order = props => {
-
   const ingredients = [];
   for (let ingredientName in props.ingredients) {
     ingredients.push({
@@ -28,8 +26,10 @@ const Order = props => {
   return (
     <div className={classes.Order}>
       <p>{ingredientOutput}</p>
-      <Burger ingredients={props.ingredients}/>
-      <p><b> £{props.price.toFixed(2)}</b></p>
+      <Burger ingredients={props.ingredients} />
+      <p>
+        <b> £{props.price.toFixed(2)}</b>
+      </p>
     </div>
   );
 };
