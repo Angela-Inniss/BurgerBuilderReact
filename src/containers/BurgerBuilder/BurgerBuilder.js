@@ -16,8 +16,9 @@ export class BurgerBuilder extends Component {
     orderInProgress: false,
     showBackDrop: false
   };
+
   componentDidMount() {
-    // console.log(this.props);
+    console.log("hi");
     this.props.onInitIngredients();
   }
   orderInProgressHandler = () => {

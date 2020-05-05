@@ -7,6 +7,7 @@ import { checkValidity } from "../../shared/validation";
 import Input from "../../components/UI/Input/Input";
 import Button from "../../components/UI/Button/Button";
 import Spinner from "../../components/UI/Spinner/Spinner";
+import Aux from "../../hoc/Aux";
 
 import * as actions from "../../store/actions/index";
 
@@ -45,7 +46,8 @@ class Auth extends Component {
       }
     },
     isSignUp: true,
-    rememberMe: false
+    rememberMe: false,
+    isSignIn: false
   };
 
   // in componentDidMount - if we reach this auth page whilst not building a burger redirect user to correct page.
@@ -93,10 +95,15 @@ class Auth extends Component {
   // };
 
   signInHandler = e => {
-    this.setState({ isSignUp: false }, () => {
+
+    this.setState(previousState => {
+      return {
+        isSignUp: !previousState.isSignUp,
+        sSignIn: !previousState.isSignIn
+      };
       // callback
       console.log(this.state.isSignUp); // false?
-      this.handleSubmit(e);
+      // this.handleSubmit(e);
     });
   };
   handleCheckboxChange = event => {
@@ -158,23 +165,44 @@ class Auth extends Component {
       isLoggedIn = <Redirect to={this.props.authRedirectPath} />; // if logged in redirect to home '/'
     }
     return (
-      <div className={classes.Auth}>
-        {isLoggedIn}
-        {errorMessage}
-        <p className={classes.signUp}>Sign up to create a burger</p>
-        <form onSubmit={this.handleSubmit}>
-          {form}
-          <Button btnType="Success">SIGN UP </Button>
-        </form>
+      <Aux>
+        <div className={classes.Auth}>
+          {isLoggedIn}
+          {errorMessage}
 
-        <p className={classes.subText}>Already have an account?</p>
-        <button
-          onClick={e => this.signInHandler(e)}
-          className={classes.btnSignIn}
-        >
-          Sign In
-        </button>
-      </div>
+          {this.state.isSignUp ? (
+            <Aux>
+              <p className={classes.signUp}>Sign up to create a burger</p>
+              <form onSubmit={this.handleSubmit}>
+                {form}
+                <Button btnType="Success">SIGN UP </Button>
+              </form>
+              <p className={classes.subText}>Already have an account?</p>
+              <button
+                onClick={e => this.signInHandler(e)}
+                className={classes.btnSignIn}
+              >
+                Sign In
+              </button>
+            </Aux>
+          ) : (
+            <Aux>
+              <p className={classes.signUp}>Sign into your account</p>
+              <form onSubmit={this.handleSubmit}>
+                {form}
+                <Button btnType="Success">SIGN IN </Button>
+              </form>
+              <p className={classes.subText}>Already have an account?</p>
+              <button
+                onClick={e => this.signInHandler(e)}
+                className={classes.btnSignIn}
+              >
+                Sign up
+              </button>
+            </Aux>
+          )}
+        </div>
+      </Aux>
     );
   }
 }
@@ -196,3 +224,5 @@ const mapDispatchToProps = dispatch => {
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Auth);
+
+// if user clicks sign in - the signInHandler should change a prop to true which then will show a new form for sign in and replace sign up form
