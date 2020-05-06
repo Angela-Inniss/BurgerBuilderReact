@@ -10,7 +10,7 @@ const OrderSummary = props => {
     setIsMobile(window.innerWidth < 600);
   };
 
-  // So when the user resizes it checks the innerWidth of the window, asks whether it's greater than 1450 and passes the result of that question to setIsMobile.
+  // So when the user re-sizes it checks the innerWidth of the window, asks whether it's less than 600 and passes the result of that question to setIsMobile.
   useEffect(() => {
     window.addEventListener("resize", changeButton);
     return () => window.removeEventListener("resize", changeButton);

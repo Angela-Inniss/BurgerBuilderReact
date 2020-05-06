@@ -95,15 +95,13 @@ class Auth extends Component {
   // };
 
   signInHandler = e => {
-
     this.setState(previousState => {
       return {
+        // callback
         isSignUp: !previousState.isSignUp,
         sSignIn: !previousState.isSignIn
       };
-      // callback
-      console.log(this.state.isSignUp); // false?
-      // this.handleSubmit(e);
+      // console.log(this.state.isSignUp); // false?
     });
   };
   handleCheckboxChange = event => {
