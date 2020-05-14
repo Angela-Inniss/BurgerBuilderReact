@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState,useEffect } from "react";
 import { connect } from "react-redux";
 
 import Aux from "../../hoc/Aux";
@@ -11,37 +11,46 @@ import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import axios from "../../../src/axios-orders";
 import * as actions from "../../store/actions/index";
 
-export class BurgerBuilder extends Component {
-  state = {
-    orderInProgress: false,
-    showBackDrop: false
-  };
+const burgerBuilder = (props) =>  {
+  // state = {
+  //   orderInProgress: false,
+  //   showBackDrop: false
+  // };
 
-  componentDidMount() {
+  const [orderInProgress, setOrderInProgress] = useState(false);
+  const [showBackDrop, setBackDrop] = useState(false);
+
+  // componentDidMount() {
+  //   console.log("hi");
+  //   this.props.onInitIngredients();
+  // }
+
+  useEffect(() => {
     console.log("hi");
-    this.props.onInitIngredients();
-  }
-  orderInProgressHandler = () => {
-    if (this.props.isLoggedIn) {
-      this.setState({ orderInProgress: true });
-      this.setState({ showBackDrop: true });
+    props.onInitIngredients();
+  }, []); // only do this when component mounts
+
+  const orderInProgressHandler = () => {
+    if (props.isLoggedIn) {
+      setOrderInProgress(true);
+      setBackDrop(true);
     } else {
-      this.props.onSetAuthRedirectPath("/checkout");
-      this.props.history.push("/auth"); // history comes from react router dom
+     props.onSetAuthRedirectPath("/checkout");
+      props.history.push("/auth"); // history comes from react router dom
     }
   };
 
-  orderCancelHandler = () => {
-    this.setState({ orderInProgress: false });
+  const orderCancelHandler = () => {
+    setOrderInProgress(false);
   };
-  orderContinueHandler = () => {
-    this.props.onInitPurchase();
-    this.props.history.push("/checkout");
+  const orderContinueHandler = () => {
+    props.onInitPurchase();
+    props.history.push("/checkout");
   };
 
-  render() {
+
     const disabledInfo = {
-      ...this.props.ings // comes from redux state below
+      ...props.ings // comes from redux state below
     };
     for (let key in disabledInfo) {
       disabledInfo[key] = disabledInfo[key] <= 0;
@@ -50,32 +59,32 @@ export class BurgerBuilder extends Component {
     }
 
     let orderSummary = null;
-    let burger = this.props.error ? (
+    let burger = props.error ? (
       <p>Ingredients can't be loaded </p>
     ) : (
       <Spinner />
     );
 
-    if (this.props.ings) {
+    if (props.ings) {
       orderSummary = (
         <OrderSummary
-          orderCancelled={this.orderCancelHandler}
-          orderContinue={this.orderContinueHandler}
-          ingredients={this.props.ings}
-          price={this.props.price}
+          orderCancelled={orderCancelHandler}
+          orderContinue={orderContinueHandler}
+          ingredients={props.ings}
+          price={props.price}
         />
       );
       burger = (
         <Aux>
-          <Burger ingredients={this.props.ings} />
+          <Burger ingredients={props.ings} />
           <BuildControls
-            ingredientAdded={this.props.onIngredientAdded}
-            ingredientRemoved={this.props.onIngredientRemoved}
+            ingredientAdded={props.onIngredientAdded}
+            ingredientRemoved={props.onIngredientRemoved}
             disabled={disabledInfo}
-            canPurchase={this.props.canPurchase}
-            price={this.props.price}
-            ordered={this.orderInProgressHandler}
-            userLoggedIn={this.props.isLoggedIn}
+            canPurchase={props.canPurchase}
+            price={props.price}
+            ordered={orderInProgressHandler}
+            userLoggedIn={props.isLoggedIn}
           />
         </Aux>
       );
@@ -84,17 +93,16 @@ export class BurgerBuilder extends Component {
     return (
       <Aux>
         <Modal
-          showBackdrop={this.state.showBackDrop}
-          show={this.state.orderInProgress}
-          modalClosed={this.orderCancelHandler}
+          showBackdrop={showBackDrop}
+          show={orderInProgress}
+          modalClosed={orderCancelHandler}
         >
           {orderSummary}
         </Modal>
         {burger}
       </Aux>
     );
-  }
-}
+};
 // defines which props should hold which slice of the state from the reducer
 const mapStateToProps = state => {
   return {
@@ -126,4 +134,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withErrorHandler(BurgerBuilder, axios));
+)(withErrorHandler(burgerBuilder, axios));

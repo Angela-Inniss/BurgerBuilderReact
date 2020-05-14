@@ -99,7 +99,7 @@ class Auth extends Component {
       return {
         // callback
         isSignUp: !previousState.isSignUp,
-        sSignIn: !previousState.isSignIn
+        isSignIn: !previousState.isSignIn
       };
       // console.log(this.state.isSignUp); // false?
     });
