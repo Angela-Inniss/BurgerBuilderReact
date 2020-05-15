@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import Modal from "../../components/UI/Modal/Modal";
 import Aux from "../Aux";
 
@@ -47,4 +48,4 @@ const withErrorHandler = (WrappedComponent, axios) => {
 export default withErrorHandler;
 // this is a higher order component
 // this wraps another component
-//
+

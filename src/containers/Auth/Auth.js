@@ -60,11 +60,12 @@ const auth = props => {
   //   this.setState({ email, rememberMe });
   // }
 
+  const {buildingBurger, authRedirectPath, onSetAuthRedirectPath} = props;
   useEffect(() => {
-    if (!props.buildingBurger && props.authRedirectPath !== "/") {
-      this.props.onSetAuthRedirectPath();
+    if (!buildingBurger && authRedirectPath !== "/") {
+      onSetAuthRedirectPath();
     }
-  }, []);
+  }, [buildingBurger, authRedirectPath, onSetAuthRedirectPath]);
 
   const inputChangedHandler = (event, controlName) => {
     const updatedControls = {

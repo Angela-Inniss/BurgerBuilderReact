@@ -9,9 +9,10 @@ const logout = props => {
   // componentDidMount() {
   //   this.props.onLogout();
   // }
+  const { onLogout } = props; // destructuring taking onLogout function from props.
   useEffect(() => {
-    props.onLogout();
-  }, []); // runs on first mount only []
+    onLogout();
+  }, [onLogout]); // if function was redefined/changed it would trigger teh useEffect again
 
   return <Redirect to="/" />;
 };

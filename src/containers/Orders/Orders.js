@@ -8,10 +8,12 @@ import { connect } from "react-redux";
 import Spinner from "../../components/UI/Spinner/Spinner";
 
 const orders = props => {
-  // using component did mount because we only want to fetch orders once this is mounted
+  // using component did mount/useEffect because we only want to fetch orders once this is mounted
+
+  const { onFetchOrders } = props; // destructured on fetch orders from pros object
   useEffect(() => {
-    props.onFetchOrders(props.token, props.userId);
-  }, []);
+    onFetchOrders(props.token, props.userId);
+  }, [onFetchOrders]);
 
   let orders = <Spinner />;
   if (!props.loading) {

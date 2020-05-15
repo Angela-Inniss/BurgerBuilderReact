@@ -3,7 +3,7 @@ import Aux from "../../../hoc/Aux";
 import Button from "../../UI/Button/Button";
 
 const OrderSummary = props => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 600); // isMobile equates to screen being less than 400px
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 600); // isMobile equates to screen being less than 600px
 
   const changeButton = () => {
     // console.log(window.innerWidth);
