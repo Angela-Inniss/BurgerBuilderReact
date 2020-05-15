@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
@@ -13,197 +13,203 @@ import * as actions from "../../store/actions/index";
 
 import classes from "./Auth.css";
 
-class Auth extends Component {
-  state = {
-    controls: {
-      email: {
-        elementType: "input-email",
-        elementConfig: {
-          type: "email",
-          placeholder: "Email Address"
-        },
-        value: localStorage.getItem("email") || "", // check if email is in local storage or not
-        validation: {
-          required: true, // must not be empty
-          isEmail: true
-        },
-        valid: false,
-        touched: false
+const auth = props => {
+  const [authForm, setAuthForm] = useState({
+    email: {
+      elementType: "input-email",
+      elementConfig: {
+        type: "email",
+        placeholder: "Email Address"
       },
-      password: {
-        elementType: "input",
-        elementConfig: {
-          type: "password",
-          placeholder: "Password"
-        },
-        value: "",
-        validation: {
-          required: true,
-          minLength: 6
-        },
-        valid: false,
-        touched: false
-      }
+      value: localStorage.getItem("email") || "", // check if email is in local storage or not
+      validation: {
+        required: true, // must not be empty
+        isEmail: true
+      },
+      valid: false,
+      touched: false
     },
-    isSignUp: true,
-    rememberMe: false,
-    isSignIn: false
-  };
+    password: {
+      elementType: "input",
+      elementConfig: {
+        type: "password",
+        placeholder: "Password"
+      },
+      value: "",
+      validation: {
+        required: true,
+        minLength: 6
+      },
+      valid: false,
+      touched: false
+    }
+  });
+
+  const [isSignUp, setIsSignUp] = useState(true);
+  const [rememberMe, setRememberMe] = useState(false);
+  const [isSignIn, setSignIn] = useState(false);
 
   // in componentDidMount - if we reach this auth page whilst not building a burger redirect user to correct page.
   // this makes sure whenever we reach the auth page without building a burger we are redirected home
-  componentDidMount() {
-    if (!this.props.buildingBurger && this.props.authRedirectPath !== "/") {
+  // componentDidMount() {
+  //   if (!this.props.buildingBurger && this.props.authRedirectPath !== "/") {
+  //     this.props.onSetAuthRedirectPath();
+  //   }
+  //   const rememberMe = localStorage.getItem("rememberMe") === "true";
+  //   const email = rememberMe ? localStorage.getItem("email") : "";
+  //   this.setState({ email, rememberMe });
+  // }
+
+  useEffect(() => {
+    if (!props.buildingBurger && props.authRedirectPath !== "/") {
       this.props.onSetAuthRedirectPath();
     }
-    const rememberMe = localStorage.getItem("rememberMe") === "true";
-    const email = rememberMe ? localStorage.getItem("email") : "";
-    this.setState({ email, rememberMe });
-  }
+  }, []);
 
-  inputChangedHandler = (event, controlName) => {
+  const inputChangedHandler = (event, controlName) => {
     const updatedControls = {
-      ...this.state.controls,
+      ...authForm,
       [controlName]: {
-        ...this.state.controls[controlName],
+        ...authForm[controlName],
         value: event.target.value,
         valid: checkValidity(
           event.target.value,
-          this.state.controls[controlName].validation
+          authForm[controlName].validation
         ),
         touched: true
       }
     };
-    this.setState({ controls: updatedControls });
+    setAuthForm(updatedControls);
   };
 
-  handleSubmit = event => {
-    this.props.onAuth(
-      this.state.controls.email.value,
-      this.state.controls.password.value,
-      this.state.isSignUp
-    );
+  const handleSubmit = event => {
+    props.onAuth(authForm.email.value, authForm.password.value, isSignUp);
     event.preventDefault();
   };
 
-  // switchAuthModeHandler = () => {
-  //   this.setState(prevState => {
+  // const signInHandler = e => {
+  //   this.setState(previousState => {
   //     return {
-  //       isSignUp: !prevState.isSignUp
+  //       // callback
+  //       isSignUp: !previousState.isSignUp,
+  //       isSignIn: !previousState.isSignIn
   //     };
+  //     // console.log(this.state.isSignUp); // false?
   //   });
   // };
 
-  signInHandler = e => {
-    this.setState(previousState => {
-      return {
-        // callback
-        isSignUp: !previousState.isSignUp,
-        isSignIn: !previousState.isSignIn
-      };
-      // console.log(this.state.isSignUp); // false?
-    });
+  const signInHandler = e => {
+    setIsSignUp(!isSignUp);
+    setSignIn(!isSignIn);
   };
-  handleCheckboxChange = event => {
-    const rememberMe = !this.state.rememberMe; // true
-    this.setState(previousState => {
-      return {
-        rememberMe: !previousState.rememberMe
-      };
-    });
+
+  // const  handleCheckboxChange = event => {
+  //    const rememberMe = !this.state.rememberMe; // true
+  //    this.setState(previousState => {
+  //      return {
+  //        rememberMe: !previousState.rememberMe
+  //      };
+  //    });
+  //    // setting local storage for email
+  //    const email = this.state.controls.email.value;
+  //
+  //    localStorage.setItem("rememberMe", rememberMe);
+  //    localStorage.setItem("email", rememberMe ? email : "");
+  //  };
+  //
+
+  // https://dmitripavlutin.com/react-usestate-hook-guide/ using prevstate in useState hook
+  const handleCheckboxChange = event => {
+    setRememberMe(rememberMe => !rememberMe); // prevState => !updatedState
     // setting local storage for email
-    const email = this.state.controls.email.value;
+
+    const email = authForm.email.value;
 
     localStorage.setItem("rememberMe", rememberMe);
     localStorage.setItem("email", rememberMe ? email : "");
   };
 
-  render() {
-    const formElementsArray = [];
+  const formElementsArray = [];
+  for (let key in authForm) {
+    formElementsArray.push({
+      id: key,
+      config: authForm[key]
+    });
+  }
+  let form = formElementsArray.map(formElement => (
+    <Input
+      key={formElement.id}
+      inputtype={formElement.config.elementType}
+      elementType={formElement.config.elementType}
+      elementConfig={formElement.config.elementConfig}
+      value={formElement.config.value}
+      invalid={!formElement.config.valid}
+      shouldValidate={formElement.config.validation}
+      touched={formElement.config.touched}
+      changed={event => inputChangedHandler(event, formElement.id)}
+      rememberMe={rememberMe}
+      checkboxChanged={handleCheckboxChange}
+      rememberEmail="Remember email"
+    />
+  ));
 
-    for (let key in this.state.controls) {
-      formElementsArray.push({
-        id: key,
-        config: this.state.controls[key]
-      });
-    }
-    let form = formElementsArray.map(formElement => (
-      <Input
-        key={formElement.id}
-        inputtype={formElement.config.elementType}
-        elementType={formElement.config.elementType}
-        elementConfig={formElement.config.elementConfig}
-        value={formElement.config.value}
-        invalid={!formElement.config.valid}
-        shouldValidate={formElement.config.validation}
-        touched={formElement.config.touched}
-        changed={event => this.inputChangedHandler(event, formElement.id)}
-        rememberMe={this.state.rememberMe}
-        checkboxChanged={this.handleCheckboxChange.bind(this)}
-        rememberEmail="Remember email"
-      />
-    ));
+  if (props.loading) {
+    form = <Spinner />;
+  }
 
-    const emailValue = formElementsArray.id;
+  let errorMessage = null;
 
-    if (this.props.loading) {
-      form = <Spinner />;
-    }
-
-    let errorMessage = null;
-
-    if (this.props.error) {
-      errorMessage = (
-        <p>{this.props.error.message}</p> // error from firebase which comes bk automatically
-      );
-    }
-
-    let isLoggedIn = null;
-    if (this.props.isLoggedIn) {
-      isLoggedIn = <Redirect to={this.props.authRedirectPath} />; // if logged in redirect to home '/'
-    }
-    return (
-      <Aux>
-        <div className={classes.Auth}>
-          {isLoggedIn}
-          {errorMessage}
-
-          {this.state.isSignUp ? (
-            <Aux>
-              <p className={classes.signUp}>Sign up to create a burger</p>
-              <form onSubmit={this.handleSubmit}>
-                {form}
-                <Button btnType="Success">SIGN UP </Button>
-              </form>
-              <p className={classes.subText}>Already have an account?</p>
-              <button
-                onClick={e => this.signInHandler(e)}
-                className={classes.btnSignIn}
-              >
-                Sign In
-              </button>
-            </Aux>
-          ) : (
-            <Aux>
-              <p className={classes.signUp}>Sign into your account</p>
-              <form onSubmit={this.handleSubmit}>
-                {form}
-                <Button btnType="Success">SIGN IN </Button>
-              </form>
-              <p className={classes.subText}>Already have an account?</p>
-              <button
-                onClick={e => this.signInHandler(e)}
-                className={classes.btnSignIn}
-              >
-                Sign up
-              </button>
-            </Aux>
-          )}
-        </div>
-      </Aux>
+  if (props.error) {
+    errorMessage = (
+      <p>{props.error.message}</p> // error from firebase which comes bk automatically
     );
   }
-}
+
+  let isLoggedIn = null;
+  if (props.isLoggedIn) {
+    isLoggedIn = <Redirect to={props.authRedirectPath} />; // if logged in redirect to home '/'
+  }
+  return (
+    <Aux>
+      <div className={classes.Auth}>
+        {isLoggedIn}
+        {errorMessage}
+
+        {isSignUp ? (
+          <Aux>
+            <p className={classes.signUp}>Sign up to create a burger</p>
+            <form onSubmit={handleSubmit}>
+              {form}
+              <Button btnType="Success">SIGN UP </Button>
+            </form>
+            <p className={classes.subText}>Already have an account?</p>
+            <button
+              onClick={e => signInHandler(e)}
+              className={classes.btnSignIn}
+            >
+              Sign In
+            </button>
+          </Aux>
+        ) : (
+          <Aux>
+            <p className={classes.signUp}>Sign into your account</p>
+            <form onSubmit={handleSubmit}>
+              {form}
+              <Button btnType="Success">SIGN IN </Button>
+            </form>
+            <p className={classes.subText}>Already have an account?</p>
+            <button
+              onClick={e => signInHandler(e)}
+              className={classes.btnSignIn}
+            >
+              Sign up
+            </button>
+          </Aux>
+        )}
+      </div>
+    </Aux>
+  );
+};
 
 const mapStateToProps = state => {
   return {
@@ -221,6 +227,4 @@ const mapDispatchToProps = dispatch => {
     onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath("/"))
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Auth);
-
-// if user clicks sign in - the signInHandler should change a prop to true which then will show a new form for sign in and replace sign up form
+export default connect(mapStateToProps, mapDispatchToProps)(auth);
