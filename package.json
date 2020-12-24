@@ -104,7 +104,7 @@
     "install": "^0.13.0",
     "jsdom": "16.2.2",
     "jsdom-global": "3.0.2",
-    "npm": "^6.14.0",
+    "npm": "^6.14.6",
     "prettier": "^1.19.1",
     "redux-mock-store": "^1.5.4",
     "style-loader": "^0.19.0"
